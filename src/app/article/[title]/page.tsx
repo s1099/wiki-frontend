@@ -28,12 +28,9 @@ async function getMetadata(title: string) {
   return response.json()
 }
 
-export default async function ArticlePage({ params }: { params: { title: string } }) {
-  const title = decodeURIComponent((await params).title);
-
-  if (!title) {
-    throw new Error("Title parameter is missing");
-  }
+export default async function ArticlePage({ params }: { params: Promise<{ title: string }> }) {
+  const paramsData = await params;
+  const title = decodeURIComponent(paramsData.title);
 
   const [content, metadata] = await Promise.all([
     getArticle(title),

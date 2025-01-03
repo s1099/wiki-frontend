@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Search from "./Search";
 import { Book } from "lucide-react";
-import { useTheme } from "next-themes";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 
 export function Header() {

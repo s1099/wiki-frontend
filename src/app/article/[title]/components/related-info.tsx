@@ -41,7 +41,7 @@ export function RelatedInfo({ metadata }: { metadata: Metadata }) {
         <div>
           <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Related Articles</h3>
           <ul className="space-y-2">
-            {metadata.related.map((item: any, index: number) => (
+            {metadata.related.map((item, index: number) => (
               <li key={index}>
                 <a
                   href={`/article/${encodeURIComponent(item.title)}`}
