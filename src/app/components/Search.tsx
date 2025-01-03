@@ -1,23 +1,23 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import Image from 'next/image'
-import { SearchIcon, X } from 'lucide-react'
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { SearchIcon, X } from "lucide-react";
 
 interface SearchResult {
-  title: string
-  description: string
-  thumbnail?: string
-  pageid: number
-  snippet: string
+  title: string;
+  description: string;
+  thumbnail?: string;
+  pageid: number;
+  snippet: string;
 }
 
 export default function Search() {
-  const [query, setQuery] = useState('')
-  const [results, setResults] = useState<SearchResult[]>([])
-  const [isOpen, setIsOpen] = useState(false)
-  const router = useRouter()
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<SearchResult[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
   // const handleSearch = async (value: string) => {
   //   setQuery(value)
@@ -29,12 +29,12 @@ export default function Search() {
   //       )}&prop=pageimages|description&piprop=thumbnail&pithumbsize=100&prop=pageimages`
   //     )
   //     const data = await response.json()
-  //     // Transform the data to match our interface  
+  //     // Transform the data to match our interface
   //     const transformedResults = data.query.search.map((item: any) => ({
   //       title: item.title,
   //       description: item.snippet.replace(/<\/?[^>]+(>|$)/g, ""),
   //       thumbnail: item.thumbnail?.source || 'vercel.svg'
-  //     }))      
+  //     }))
   //     setResults(transformedResults)
   //     setIsOpen(true)
   //   } else {
@@ -44,41 +44,48 @@ export default function Search() {
   // }
 
   const handleSearch = async (value: string) => {
-    setQuery(value)
+    setQuery(value);
     if (value.trim()) {
       const searchResponse = await fetch(
-        `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&srsearch=${encodeURIComponent(value)}`
-      )
-      const searchData = await searchResponse.json()
-      const pageIds = searchData.query.search.map((item: SearchResult) => item.pageid)
-  
+        `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&srsearch=${encodeURIComponent(
+          value
+        )}`
+      );
+      const searchData = await searchResponse.json();
+      const pageIds = searchData.query.search.map(
+        (item: SearchResult) => item.pageid
+      );
+
       const imagesResponse = await fetch(
-        `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=pageimages&piprop=thumbnail&pithumbsize=100&pageids=${pageIds.join('|')}`
-      )
-      const imagesData = await imagesResponse.json()
-  
-      const transformedResults = searchData.query.search.map((item: SearchResult) => {
-        const pageImage = imagesData.query.pages[item.pageid]
-        return {
-          title: item.title,
-          description: item.snippet.replace(/<\/?[^>]+(>|$)/g, ""),
-          thumbnail: pageImage?.thumbnail?.source || '/placeholder.svg'
+        `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=pageimages&piprop=thumbnail&pithumbsize=100&pageids=${pageIds.join(
+          "|"
+        )}`
+      );
+      const imagesData = await imagesResponse.json();
+
+      const transformedResults = searchData.query.search.map(
+        (item: SearchResult) => {
+          const pageImage = imagesData.query.pages[item.pageid];
+          return {
+            title: item.title,
+            description: item.snippet.replace(/<\/?[^>]+(>|$)/g, ""),
+            thumbnail: pageImage?.thumbnail?.source || "/placeholder.svg",
+          };
         }
-      })
-  
-      setResults(transformedResults)
-      setIsOpen(true)
+      );
+
+      setResults(transformedResults);
+      setIsOpen(true);
     } else {
-      setResults([])
-      setIsOpen(false)
+      setResults([]);
+      setIsOpen(false);
     }
-  }
-  
+  };
 
   const handleResultClick = (title: string) => {
-    router.push(`/article/${encodeURIComponent(title)}`)
-    setIsOpen(false)
-  }
+    router.push(`/article/${encodeURIComponent(title)}`);
+    setIsOpen(false);
+  };
 
   return (
     <div className="relative w-full max-w-2xl">
@@ -94,9 +101,9 @@ export default function Search() {
         {query && (
           <button
             onClick={() => {
-              setQuery('')
-              setResults([])
-              setIsOpen(false)
+              setQuery("");
+              setResults([]);
+              setIsOpen(false);
             }}
             className="absolute right-4 top-1/2 -translate-y-1/2"
           >
@@ -106,28 +113,34 @@ export default function Search() {
       </div>
 
       {isOpen && results.length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 max-h-[80vh] overflow-y-auto">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 max-h-[80vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent hover:scrollbar-thumb-gray-400 dark:hover:scrollbar-thumb-gray-500">
           <div className="p-4">
-            <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-3">ARTICLES</h3>
+            <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-3">
+              ARTICLES
+            </h3>
             <div className="space-y-4">
               {results.map((result, index) => (
                 <button
                   key={index}
                   onClick={() => handleResultClick(result.title)}
-                  className="flex items-start space-x-4 w-full text-left hover:bg-gray-50 dark:hover:bg-gray-700 p-2 rounded-lg transition-colors"
+                  className="flex items-start space-x-4 w-full text-left hover:bg-gray-50 dark:hover:bg-gray-700 p-2 rounded-xl transition-colors"
                 >
-                    <div className="flex-shrink-0 w-12 h-12 relative rounded-lg overflow-hidden">
+                  <div className="flex-shrink-0 w-12 h-12 relative rounded-xl overflow-hidden">
                     <Image
-                      src={result.thumbnail || '/placeholder.svg'}
+                      src={result.thumbnail || "/placeholder.svg"}
                       alt=""
                       fill
-                      sizes='100px'
+                      sizes="100px"
                       className="object-cover"
                     />
-                    </div>
+                  </div>
                   <div>
-                    <h4 className="font-medium text-gray-900 dark:text-white">{result.title}</h4>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">{result.description}</p>
+                    <h4 className="font-medium text-gray-900 dark:text-white">
+                      {result.title}
+                    </h4>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      {result.description}
+                    </p>
                   </div>
                 </button>
               ))}
@@ -136,6 +149,5 @@ export default function Search() {
         </div>
       )}
     </div>
-  )
+  );
 }
-

@@ -15,7 +15,7 @@ export function ThemeSwitcher() {
     } else {
       setTheme(theme === "dark" ? "light" : "dark");
     }
-      
+
     // document.startViewTransition?.(() => {
     //   setTheme(theme === "dark" ? "light" : "dark");
     // }) || setTheme(theme === "dark" ? "light" : "dark");

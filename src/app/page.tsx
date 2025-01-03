@@ -1,5 +1,5 @@
-import Search from './components/Search'
-import { Book } from 'lucide-react'
+import Search from "./components/Search";
+import { Book } from "lucide-react";
 
 export default function Home() {
   return (
@@ -9,11 +9,12 @@ export default function Home() {
           <div className="bg-gray-900 dark:bg-white p-3 rounded-xl">
             <Book className="h-8 w-8 text-white dark:text-gray-900" />
           </div>
-          <h1 className="text-3xl font-bold ml-4 text-gray-900 dark:text-white">Wikipedia</h1>
+          <h1 className="text-3xl font-bold ml-4 text-gray-900 dark:text-white">
+            Wikipedia
+          </h1>
         </div>
         <Search />
       </div>
     </div>
-  )
+  );
 }
-

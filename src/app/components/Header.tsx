@@ -29,7 +29,7 @@ export function Header() {
       <div className="container mx-auto px-4 py-2 flex items-center justify-between">
         <Link href="/" className="flex items-center space-x-2">
           <div
-            className={`p-1 rounded-lg ${
+            className={`p-1 rounded-xl ${
               isScrolled
                 ? "bg-gray-900 dark:bg-white"
                 : "bg-gray-900/70 dark:bg-white/70"
@@ -57,7 +57,7 @@ export function Header() {
           <div className="w-96">
             <Search />
           </div>
-            <ThemeSwitcher />
+          <ThemeSwitcher />
         </div>
       </div>
     </header>

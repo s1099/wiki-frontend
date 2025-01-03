@@ -1,30 +1,33 @@
-'use client'
+"use client";
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef } from "react";
+import { useArticle } from "../contexts/ArticleContext";
+import { ArticleLoader } from "./article-loader";
 
-export function ArticleContent({ content }: { content: string }) {
-  const articleRef = useRef<HTMLDivElement>(null)
+export function ArticleContent() {
+  const { articleData, isLoading, error } = useArticle();
+  const articleRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (articleRef.current) {
-      const parser = new DOMParser()
-      const doc = parser.parseFromString(content, 'text/html')
-      doc.querySelectorAll('.mw-editsection').forEach(el => el.remove())
+    if (articleRef.current && articleData?.content) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(articleData.content, "text/html");
+      doc.querySelectorAll(".mw-editsection").forEach((el) => el.remove());
 
-      doc.querySelectorAll('img').forEach(img => {
-        if (img.src.startsWith('/')) {
-          img.src = `https://en.wikipedia.org${img.src}`
+      doc.querySelectorAll("img").forEach((img) => {
+        if (img.src.startsWith("/")) {
+          img.src = `https://en.wikipedia.org${img.src}`;
         }
-      })
+      });
 
-      doc.querySelectorAll('a').forEach(link => {
-        if (link.href.startsWith('/wiki/')) {
-          link.href = `/article/${link.href.split('/wiki/')[1]}`
+      doc.querySelectorAll("a").forEach((link) => {
+        if (link.href.startsWith("/wiki/")) {
+          link.href = `/article/${link.href.split("/wiki/")[1]}`;
         }
-      })
+      });
 
       // Apply styles
-      const style = document.createElement('style')
+      const style = document.createElement("style");
       style.textContent = `
         .article-content {
           font-size: 1.125rem;
@@ -70,14 +73,33 @@ export function ArticleContent({ content }: { content: string }) {
         .article-content a:hover {
           text-decoration: underline;
         }
-      `
+      `;
 
-      articleRef.current.innerHTML = ''
-      articleRef.current.appendChild(style)
-      articleRef.current.appendChild(doc.body)
+      articleRef.current.innerHTML = "";
+      articleRef.current.appendChild(style);
+      articleRef.current.appendChild(doc.body);
     }
-  }, [content])
+  }, [articleData?.content]);
 
-  return <div ref={articleRef} className="article-content prose dark:sprose-dark" />
+  if (isLoading) return <ArticleLoader />;
+  if (error) return <div>Error: {error.message}</div>;
+  if (!articleData) return null;
+
+  // return <div ref={articleRef} className="article-content prose dark:sprose-dark" />
+  return (
+    <>
+      <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+        {articleData.metadata.title}
+      </h1>
+      {articleData.metadata.description && (
+        <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
+          {articleData.metadata.description}
+        </p>
+      )}
+      <div
+        ref={articleRef}
+        className="article-content prose dark:prose-invert max-w-none"
+      />
+    </>
+  );
 }
-

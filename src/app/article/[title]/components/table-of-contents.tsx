@@ -1,34 +1,44 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import { ChevronRight } from 'lucide-react'
+import { useEffect, useState } from "react";
+import { ChevronRight } from "lucide-react";
+import { useArticle } from "../contexts/ArticleContext";
 
 interface Section {
-  id: string
-  title: string
-  level: number
+  id: string;
+  title: string;
+  level: number;
 }
 
-export function TableOfContents({ content }: { content: string }) {
-  const [sections, setSections] = useState<Section[]>([])
+export function TableOfContents() {
+  const { articleData, isLoading, error } = useArticle();
+  const [sections, setSections] = useState<Section[]>([]);
 
   useEffect(() => {
-    const parser = new DOMParser()
-    const doc = parser.parseFromString(content, 'text/html')
-    const headings = doc.querySelectorAll('h2, h3, h4')
-    
+    if (!articleData?.content) return;
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(articleData.content, "text/html");
+    const headings = doc.querySelectorAll("h2, h3, h4");
+
     const extractedSections = Array.from(headings).map((heading) => ({
       id: heading.id,
-      title: heading.textContent || '',
-      level: parseInt(heading.tagName[1])
-    }))
+      title: heading.textContent || "",
+      level: parseInt(heading.tagName[1]),
+    }));
 
-    setSections(extractedSections)
-  }, [content])
+    setSections(extractedSections);
+  }, [articleData?.content]);
+
+  if (isLoading) return <div>Loading table of contents...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  if (!articleData) return null;
 
   return (
-    <nav className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-3">
-      <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Contents</h2>
+    <nav className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-3">
+      <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+        Contents
+      </h2>
       <div className="max-h-[calc(100vh-200px)] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent hover:scrollbar-thumb-gray-400 dark:hover:scrollbar-thumb-gray-500">
         <ul className="space-y-2">
           {sections.map((section, index) => (
@@ -49,6 +59,5 @@ export function TableOfContents({ content }: { content: string }) {
         </ul>
       </div>
     </nav>
-  )
+  );
 }
-
