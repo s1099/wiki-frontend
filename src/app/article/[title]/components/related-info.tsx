@@ -1,4 +1,15 @@
-export function RelatedInfo({ metadata }: { metadata: any }) {
+interface Metadata {
+  thumbnail?: {
+    source: string;
+  };
+  title: string;
+  extract_html?: string;
+  related?: Array<{
+    title: string;
+  }>;
+}
+
+export function RelatedInfo({ metadata }: { metadata: Metadata }) {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-3">
       {metadata.thumbnail && (

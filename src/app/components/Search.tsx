@@ -9,6 +9,8 @@ interface SearchResult {
   title: string
   description: string
   thumbnail?: string
+  pageid: number
+  snippet: string
 }
 
 export default function Search() {
@@ -48,14 +50,14 @@ export default function Search() {
         `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&srsearch=${encodeURIComponent(value)}`
       )
       const searchData = await searchResponse.json()
-      const pageIds = searchData.query.search.map((item: any) => item.pageid)
+      const pageIds = searchData.query.search.map((item: SearchResult) => item.pageid)
   
       const imagesResponse = await fetch(
         `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=pageimages&piprop=thumbnail&pithumbsize=100&pageids=${pageIds.join('|')}`
       )
       const imagesData = await imagesResponse.json()
   
-      const transformedResults = searchData.query.search.map((item: any) => {
+      const transformedResults = searchData.query.search.map((item: SearchResult) => {
         const pageImage = imagesData.query.pages[item.pageid]
         return {
           title: item.title,
