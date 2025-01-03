@@ -23,18 +23,10 @@ export function Header() {
     //thank you firefox
     if (typeof document.startViewTransition === "function") {
       document.startViewTransition(() => {
-        setTheme(current => {
-          if (current === 'light') return 'dark';
-          if (current === 'dark') return 'system';
-          return 'light';
-        });
+        setTheme(theme === "dark" ? "light" : "dark");
       });
     } else {
-      setTheme(current => {
-        if (current === 'light') return 'dark';
-        if (current === 'dark') return 'system';
-        return 'light';
-      });
+      setTheme(theme === "dark" ? "light" : "dark");
     }
   };
 
@@ -83,10 +75,8 @@ export function Header() {
           >
             {theme === "dark" ? (
               <Moon className="h-5 w-5" />
-            ) : theme === "light" ? (
-              <Sun className="h-5 w-5" />
             ) : (
-              <Monitor className="h-5 w-5" />
+              <Sun className="h-5 w-5" />
             )}
           </button>
         </div>
