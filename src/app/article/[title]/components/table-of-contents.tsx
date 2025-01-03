@@ -13,7 +13,6 @@ export function TableOfContents({ content }: { content: string }) {
   const [sections, setSections] = useState<Section[]>([])
 
   useEffect(() => {
-    // Parse the HTML content to extract headings
     const parser = new DOMParser()
     const doc = parser.parseFromString(content, 'text/html')
     const headings = doc.querySelectorAll('h2, h3, h4')

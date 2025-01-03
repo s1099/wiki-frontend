@@ -7,21 +7,16 @@ export function ArticleContent({ content }: { content: string }) {
 
   useEffect(() => {
     if (articleRef.current) {
-      // Process the content
       const parser = new DOMParser()
       const doc = parser.parseFromString(content, 'text/html')
-
-      // Remove unwanted elements
       doc.querySelectorAll('.mw-editsection').forEach(el => el.remove())
 
-      // Process images
       doc.querySelectorAll('img').forEach(img => {
         if (img.src.startsWith('/')) {
           img.src = `https://en.wikipedia.org${img.src}`
         }
       })
 
-      // Process links
       doc.querySelectorAll('a').forEach(link => {
         if (link.href.startsWith('/wiki/')) {
           link.href = `/article/${link.href.split('/wiki/')[1]}`
@@ -83,6 +78,6 @@ export function ArticleContent({ content }: { content: string }) {
     }
   }, [content])
 
-  return <div ref={articleRef} className="article-content prose dark:prose-invert max-w-none" />
+  return <div ref={articleRef} className="article-content prose dark:sprose-dark" />
 }
 

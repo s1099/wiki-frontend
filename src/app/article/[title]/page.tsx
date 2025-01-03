@@ -29,7 +29,7 @@ async function getMetadata(title: string) {
 }
 
 export default async function ArticlePage({ params }: { params: { title: string } }) {
-  const { title } = await params;
+  const title = decodeURIComponent((await params).title);
 
   if (!title) {
     throw new Error("Title parameter is missing");

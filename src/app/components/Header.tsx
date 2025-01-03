@@ -5,6 +5,7 @@ import Link from "next/link";
 import Search from "./Search";
 import { Book, Monitor, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import { ThemeSwitcher } from "./ThemeSwitcher";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -18,17 +19,6 @@ export function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const toggleTheme = () => {
-    //thank you firefox
-    if (typeof document.startViewTransition === "function") {
-      document.startViewTransition(() => {
-        setTheme(theme === "dark" ? "light" : "dark");
-      });
-    } else {
-      setTheme(theme === "dark" ? "light" : "dark");
-    }
-  };
 
   return (
     <header
@@ -69,16 +59,7 @@ export function Header() {
           <div className="w-96">
             <Search />
           </div>
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
-          >
-            {theme === "dark" ? (
-              <Moon className="h-5 w-5" />
-            ) : (
-              <Sun className="h-5 w-5" />
-            )}
-          </button>
+            <ThemeSwitcher />
         </div>
       </div>
     </header>
