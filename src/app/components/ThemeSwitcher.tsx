@@ -8,13 +8,9 @@ export function ThemeSwitcher() {
 
   const toggleTheme = () => {
     //thank you firefox
-    if (typeof document.startViewTransition === "function") {
-      document.startViewTransition(() => {
-        setTheme(theme === "dark" ? "light" : "dark");
-      });
-    } else {
+    document.startViewTransition?.(() => {
       setTheme(theme === "dark" ? "light" : "dark");
-    }
+    }) || setTheme(theme === "dark" ? "light" : "dark");
   };
 
   return (
