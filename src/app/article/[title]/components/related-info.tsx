@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useArticle } from "../contexts/ArticleContext";
 
 export interface RelatedArticle {
@@ -18,10 +19,13 @@ export function RelatedInfo() {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-3">
       {metadata.thumbnail && (
-        <img
+        <Image
           src={metadata.thumbnail.source}
           alt={metadata.title}
-          className="w-full h-auto rounded-xl mb-4"
+          height={217}
+          width={326}
+          objectFit="cover"
+          className="rounded-xl mb-4"
         />
       )}
 

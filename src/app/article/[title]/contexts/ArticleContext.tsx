@@ -10,11 +10,12 @@ interface Metadata {
   title: string;
   extract_html?: string;
   related?: Array<RelatedArticle>;
+  description?: string;
 }
 
 interface ArticleData {
   content: string;
-  metadata: any;
+  metadata: Metadata;
 }
 
 interface ArticleContextType {

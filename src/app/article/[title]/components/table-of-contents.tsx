@@ -36,7 +36,7 @@ export function TableOfContents() {
 
   return (
     <nav className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-3">
-      <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+      <h2 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">
         Contents
       </h2>
       <div className="max-h-[calc(100vh-200px)] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent hover:scrollbar-thumb-gray-400 dark:hover:scrollbar-thumb-gray-500">
