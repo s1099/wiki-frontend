@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { ChevronRight } from "lucide-react";
 import { useArticle } from "../contexts/ArticleContext";
+import { ArticleLoader } from "./article-loader";
 
 interface Section {
   id: string;
@@ -30,7 +31,7 @@ export function TableOfContents() {
     setSections(extractedSections);
   }, [articleData?.content]);
 
-  if (isLoading) return <div>Loading table of contents...</div>;
+  if (isLoading) return <ArticleLoader />;
   if (error) return <div>Error: {error.message}</div>;
   if (!articleData) return null;
 

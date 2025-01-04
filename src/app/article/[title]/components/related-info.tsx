@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useArticle } from "../contexts/ArticleContext";
+import { ArticleLoader } from "./article-loader";
 
 export interface RelatedArticle {
   title: string;
@@ -10,7 +11,7 @@ export interface RelatedArticle {
 export function RelatedInfo() {
   const { articleData, isLoading, error } = useArticle();
 
-  if (isLoading) return <div>Loading related info...</div>;
+  if (isLoading) return <ArticleLoader />;
   if (error) return <div>Error: {error.message}</div>;
   if (!articleData) return null;
 
