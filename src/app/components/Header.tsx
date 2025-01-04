@@ -44,7 +44,7 @@ export function Header() {
             />
           </div>
           <h1
-            className={`text-xl font-semibold ${
+            className={`hidden sm:block text-xl font-semibold ${
               isScrolled
                 ? "text-gray-900 dark:text-white"
                 : "text-gray-900/90 dark:text-white/90"
@@ -53,8 +53,8 @@ export function Header() {
             Wikipedia
           </h1>
         </Link>
-        <div className="flex items-center space-x-4">
-          <div className="w-96">
+        <div className="flex items-center space-x-2 sm:space-x-4 flex-1 max-w-lg mx-4">
+          <div className="w-full">
             <Search />
           </div>
           <ThemeSwitcher />
