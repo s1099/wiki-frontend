@@ -96,8 +96,6 @@ export function TableOfContents() {
       </div>
 
       <div className="relative">
-        <div className="absolute left-[1.15rem] top-0 bottom-0 w-px bg-gradient-to-b from-blue-500/0 via-blue-500/20 to-blue-500/0 dark:from-blue-400/0 dark:via-blue-400/20 dark:to-blue-400/0" />
-
         <div className="max-h-[calc(100vh-200px)] overflow-y-auto pr-3 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent hover:scrollbar-thumb-gray-400 dark:hover:scrollbar-thumb-gray-500">
           <ul className="space-y-0.5">
             {sections.map((section, index) => {

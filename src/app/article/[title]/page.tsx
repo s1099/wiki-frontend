@@ -16,31 +16,53 @@ export default async function ArticlePage({
 
   return (
     <ArticleProvider title={title}>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
         <Header />
         <div className="container mx-auto px-4 py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-[200px_1fr_350px] gap-8">
-            <div className="hidden lg:block">
-              <div className="sticky top-24">
-                <Suspense fallback={<div>Loading contents...</div>}>
+          <div className="grid grid-cols-1 lg:grid-cols-[250px_1fr_350px] gap-8">
+            <aside className="hidden lg:block">
+              <div className="sticky top-24 transition-all duration-300">
+                <Suspense
+                  fallback={
+                    <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-lg p-6">
+                      <ArticleLoader />
+                    </div>
+                  }
+                >
                   <TableOfContents />
                 </Suspense>
               </div>
-            </div>
+            </aside>
+
             <main className="min-w-0">
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-8">
-                <Suspense fallback={<ArticleLoader />}>
-                  <ArticleContent />
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl">
+                <Suspense
+                  fallback={
+                    <div className="p-8">
+                      <ArticleLoader />
+                    </div>
+                  }
+                >
+                  <div className="p-8">
+                    <ArticleContent />
+                  </div>
                 </Suspense>
               </div>
             </main>
-            <div className="hidden lg:block">
-              <div className="sticky top-24">
-                <Suspense fallback={<div>Loading related info...</div>}>
+
+            <aside className="hidden lg:block">
+              <div className="sticky top-24 transition-all duration-300">
+                <Suspense
+                  fallback={
+                    <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-lg p-6">
+                      <ArticleLoader />
+                    </div>
+                  }
+                >
                   <RelatedInfo />
                 </Suspense>
               </div>
-            </div>
+            </aside>
           </div>
         </div>
       </div>
