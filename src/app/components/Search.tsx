@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { SearchIcon, X } from "lucide-react";
+import { Search as SearchIcon, X, ArrowRight, Loader2 } from "lucide-react";
 
 interface SearchResult {
   title: string;
@@ -17,65 +17,49 @@ export default function Search() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-
-  // const handleSearch = async (value: string) => {
-  //   setQuery(value)
-  //   if (value.trim()) {
-  //     // Example API call - replace with actual Wikipedia API
-  //     const response = await fetch(
-  //       `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&srsearch=${encodeURIComponent(
-  //         value
-  //       )}&prop=pageimages|description&piprop=thumbnail&pithumbsize=100&prop=pageimages`
-  //     )
-  //     const data = await response.json()
-  //     // Transform the data to match our interface
-  //     const transformedResults = data.query.search.map((item: any) => ({
-  //       title: item.title,
-  //       description: item.snippet.replace(/<\/?[^>]+(>|$)/g, ""),
-  //       thumbnail: item.thumbnail?.source || 'vercel.svg'
-  //     }))
-  //     setResults(transformedResults)
-  //     setIsOpen(true)
-  //   } else {
-  //     setResults([])
-  //     setIsOpen(false)
-  //   }
-  // }
 
   const handleSearch = async (value: string) => {
     setQuery(value);
     if (value.trim()) {
-      const searchResponse = await fetch(
-        `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&srsearch=${encodeURIComponent(
-          value
-        )}`
-      );
-      const searchData = await searchResponse.json();
-      const pageIds = searchData.query.search.map(
-        (item: SearchResult) => item.pageid
-      );
+      setIsLoading(true);
+      try {
+        const searchResponse = await fetch(
+          `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&srsearch=${encodeURIComponent(
+            value
+          )}`
+        );
+        const searchData = await searchResponse.json();
+        const pageIds = searchData.query.search.map(
+          (item: SearchResult) => item.pageid
+        );
 
-      const imagesResponse = await fetch(
-        `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=pageimages&piprop=thumbnail&pithumbsize=100&pageids=${pageIds.join(
-          "|"
-        )}`
-      );
-      const imagesData = await imagesResponse.json();
+        const imagesResponse = await fetch(
+          `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=pageimages&piprop=thumbnail&pithumbsize=100&pageids=${pageIds.join(
+            "|"
+          )}`
+        );
+        const imagesData = await imagesResponse.json();
 
-      const transformedResults = searchData.query.search.map(
-        (item: SearchResult) => {
-          const pageImage = imagesData.query.pages[item.pageid];
-          return {
-            title: item.title,
-            description: item.snippet.replace(/<\/?[^>]+(>|$)/g, ""),
-            thumbnail: pageImage?.thumbnail?.source || "/placeholder.svg",
-          };
-        }
-      );
+        const transformedResults = searchData.query.search.map(
+          (item: SearchResult) => {
+            const pageImage = imagesData.query.pages[item.pageid];
+            return {
+              title: item.title,
+              description: item.snippet.replace(/<\/?[^>]+(>|$)/g, ""),
+              thumbnail: pageImage?.thumbnail?.source || "/placeholder.svg",
+            };
+          }
+        );
 
-      setResults(transformedResults);
-      setIsOpen(true);
+        setResults(transformedResults);
+        setIsOpen(true);
+      } catch (error) {
+        console.error("Search failed:", error);
+      } finally {
+        setIsLoading(false);
+      }
     } else {
       setResults([]);
       setIsOpen(false);
@@ -88,57 +72,71 @@ export default function Search() {
   };
 
   return (
-    <div className="relative w-full max-w-2xl">
-      <div className="relative">
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => handleSearch(e.target.value)}
-          placeholder="Search all of Wikipedia for..."
-          className="w-full px-12 py-3 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full focus:border-blue-400 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300 dark:focus:ring-blue-700 focus:ring-opacity-40 transition-all duration-200"
-        />
-        <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 dark:text-gray-500" />
-        {query && (
-          <button
-            onClick={() => {
-              setQuery("");
-              setResults([]);
-              setIsOpen(false);
-            }}
-            className="absolute right-4 top-1/2 -translate-y-1/2"
-          >
-            <X className="h-5 w-5 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300" />
-          </button>
-        )}
+    <div className="relative w-full max-w-3xl mx-auto">
+      <div className="relative group">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-100 blur transition-all duration-300" />
+        <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-sm transition-transform duration-200 transform group-hover:scale-[1.01]">
+          <div className="flex items-center p-1">
+            <div className="flex items-center justify-center w-12 h-12">
+              {isLoading ? (
+                <Loader2 className="h-5 w-5 text-gray-400 animate-spin" />
+              ) : (
+                <SearchIcon className="h-5 w-5 text-gray-400" />
+              )}
+            </div>
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => handleSearch(e.target.value)}
+              placeholder="Search Wikipedia..."
+              className="flex-1 px-4 py-3 text-lg bg-transparent border-none focus:outline-none text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500"
+            />
+            {query && (
+              <button
+                onClick={() => {
+                  setQuery("");
+                  setResults([]);
+                  setIsOpen(false);
+                }}
+                className="flex items-center justify-center w-12 h-12 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
+              >
+                <X className="h-5 w-5 text-gray-400" />
+              </button>
+            )}
+          </div>
+        </div>
       </div>
 
       {isOpen && results.length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 max-h-[80vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent hover:scrollbar-thumb-gray-400 dark:hover:scrollbar-thumb-gray-500">
-          <div className="p-4">
-            <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-3">
-              ARTICLES
+        <div className="absolute top-full left-0 right-0 mt-4 bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 max-h-[70vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent hover:scrollbar-thumb-gray-400 dark:hover:scrollbar-thumb-gray-500">
+          <div className="p-6">
+            <h3 className="text-sm font-medium text-gray-400 dark:text-gray-500 tracking-wider uppercase mb-4">
+              articles
             </h3>
-            <div className="space-y-4">
+            <div className="space-y-3">
               {results.map((result, index) => (
                 <button
                   key={index}
                   onClick={() => handleResultClick(result.title)}
-                  className="flex items-start space-x-4 w-full text-left hover:bg-gray-50 dark:hover:bg-gray-700 p-2 rounded-xl transition-colors"
+                  className="group flex items-start w-full text-left p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-200"
                 >
-                  <div className="flex-shrink-0 w-12 h-12 relative rounded-xl overflow-hidden">
+                  <div className="flex-shrink-0 w-16 h-16 relative rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800">
                     <Image
                       src={result.thumbnail || "/placeholder.svg"}
                       alt=""
                       fill
                       sizes="100px"
-                      className="object-cover"
+                      className="object-cover transition-transform duration-200 group-hover:scale-110"
                     />
                   </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900 dark:text-white">
-                      {result.title}
-                    </h4>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <div className="flex-1 min-w-0 ml-4">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-semibold text-gray-900 dark:text-white truncate">
+                        {result.title}
+                      </h4>
+                      <ArrowRight className="h-4 w-4 text-gray-400 opacity-0 group-hover:opacity-100 transform translate-x-0 group-hover:translate-x-1 transition-all duration-200" />
+                    </div>
+                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
                       {result.description}
                     </p>
                   </div>

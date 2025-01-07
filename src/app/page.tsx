@@ -1,3 +1,5 @@
+'use client'
+
 import Search from "./components/Search";
 import { Book } from "lucide-react";
 import { ThemeSwitcher } from "./components/ThemeSwitcher";
