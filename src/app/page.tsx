@@ -1,9 +1,8 @@
-'use client'
+"use client";
 
 import Search from "./components/Search";
 import { Book } from "lucide-react";
 import { ThemeSwitcher } from "./components/ThemeSwitcher";
-
 export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col items-center p-4 sm:p-8">

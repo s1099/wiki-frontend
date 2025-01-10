@@ -75,7 +75,7 @@ export default function Search() {
     <div className="relative w-full max-w-3xl mx-auto">
       <div className="relative group">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 blur transition-all duration-300" />
-        <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-sm transition-transform duration-200 transform group-hover:scale-[1.01] group-focus-within:scale-[1.01]">
+        <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-sm transition-transform duration-200 transform group-hover:scale-[1.01] group-focus-within:scale-[1.01] border-2 border-opacity-10 border-white dark:border-gray-700 group-hover:border-opacity-30 group-focus-within:border-opacity-30">
           <div className="flex items-center p-1">
             <div className="flex items-center justify-center w-12 h-12">
               {isLoading ? (
