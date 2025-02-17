@@ -3,9 +3,11 @@
 import Search from "./components/Search";
 import { Book } from "lucide-react";
 import { ThemeSwitcher } from "./components/ThemeSwitcher";
+import { Background } from "./components/Background";
+
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col items-center p-4 sm:p-8">
+    <Background containerClassName="min-h-screen flex flex-col items-center">
       <div className="w-full max-w-2xl mx-auto pt-16 sm:pt-24">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center">
@@ -22,6 +24,6 @@ export default function Home() {
         </div>
         <Search />
       </div>
-    </div>
+    </Background>
   );
 }

@@ -75,7 +75,7 @@ export default function Search() {
     <div className="relative w-full max-w-3xl mx-auto">
       <div className="relative group">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 blur transition-all duration-300" />
-        <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-sm transition-transform duration-200 transform group-hover:scale-[1.01] group-focus-within:scale-[1.01] border-2 border-opacity-10 border-white dark:border-gray-700 group-hover:border-opacity-30 group-focus-within:border-opacity-30">
+        <div className="relative backdrop-blur-lg bg-white/95 dark:bg-gray-900/90 rounded-2xl shadow-sm transition-transform duration-200 transform group-hover:scale-[1.01] group-focus-within:scale-[1.01] border-2 border-opacity-10 border-white dark:border-gray-700 group-hover:border-opacity-30 group-focus-within:border-opacity-30">
           <div className="flex items-center p-1">
             <div className="flex items-center justify-center w-12 h-12">
               {isLoading ? (
@@ -108,7 +108,7 @@ export default function Search() {
       </div>
 
       {isOpen && results.length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-4 bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 max-h-[70vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent hover:scrollbar-thumb-gray-400 dark:hover:scrollbar-thumb-gray-500">
+        <div className="absolute   top-full left-0 right-0 mt-4 bg-white/60 dark:bg-gray-900/70  rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 max-h-[70vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent hover:scrollbar-thumb-gray-400 dark:hover:scrollbar-thumb-gray-500">
           <div className="p-6">
             <h3 className="text-sm font-medium text-gray-400 dark:text-gray-500 tracking-wider uppercase mb-4">
               articles
